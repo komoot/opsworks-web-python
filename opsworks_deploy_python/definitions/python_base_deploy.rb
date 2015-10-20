@@ -71,9 +71,9 @@ define :python_base_setup do
     venv = "virtualenv"
     venv_ver = virtualenv_ver_map[py_version]
     venv << "==#{venv_ver}" if venv_ver
-    execute "/usr/bin/easy_install-#{py_version} #{pip} #{venv}"
-    node.override['python']['pip_location'] = "/usr/bin/pip#{py_version}"
-    node.override['python']['virtualenv_location'] = "/usr/bin/virtualenv-#{py_version}"
+    execute "/usr/local/bin/easy_install-#{py_version} #{pip} #{venv}"
+    node.override['python']['pip_location'] = "/usr/local/bin/pip#{py_version}"
+    node.override['python']['virtualenv_location'] = "/usr/local/bin/virtualenv-#{py_version}"
   end
   
   if !use_custom_py
