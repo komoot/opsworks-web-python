@@ -61,7 +61,6 @@ define :django_configure do
     node.normal[:deploy][application]["django_gunicorn"] = gunicorn
     
     if gunicorn["enabled"]
-      include_recipe 'supervisor'
       base_command = "#{::File.join(deploy[:deploy_to], 'shared', 'env', 'bin', 'python')} manage.py run_gunicorn"
       
       gunicorn_cfg = ::File.join(deploy[:deploy_to], 'shared', 'gunicorn_config.py')
@@ -81,22 +80,8 @@ define :django_configure do
         preload_app gunicorn["preload_app"]
         action :create
       end
-      
-      supervisor_service application do
-        action :enable
-        environment gunicorn["environment"] || {}
-        command gunicorn_command
-        directory ::File.join(deploy[:deploy_to], "current")
-        autostart true
-        user deploy[:user]
-      end
-      
-      supervisor_service application do
-        action :nothing
-        only_if "sleep 60"
-        subscribes :restart,  "gunicorn_config[#{gunicorn_command}]", :delayed
-        subscribes :restart,  "template[#{django_cfg}]", :delayed
-      end
+    
+      # TODO: upstart template and service
     end
     
     celery = Hash.new
@@ -116,9 +101,7 @@ define :django_configure do
       end
     end
     if run_action
-      supervisor_service application do
-        action run_action
-      end
+      # TODO: run upstart service
     end
   end
 end

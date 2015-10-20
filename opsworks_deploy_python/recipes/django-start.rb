@@ -5,9 +5,7 @@ node[:deploy].each do |application, deploy|
 
   enable_gunicorn= Helpers.buildout_setting(deploy, 'enable_gunicorn', node)
   if enable_gunicorn
-    supervisor_service application do
-      action :start
-    end
+    # TODO: use upstart
   end
 
 end
