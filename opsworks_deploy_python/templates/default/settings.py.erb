@@ -1,3 +1,5 @@
+import os
+
 DEBUG = <%= @debug ? "True" : "False" %>
 
 # try:
@@ -11,7 +13,7 @@ LOCAL_DATABASE = {
     'NAME': '<%= @django_database["name"] %>',
     'ENGINE': 'django.db.backends.<%= @django_database["adapter"] %>',
     'USER': '<%= @django_database["username"] %>',
-    'PASSWORD': '<%= @django_database["password"] %>',
+    'PASSWORD': <%= @django_database["password_env"] ? 'os.environ.get(\'' + @django_database["password_env"] + '\')' : '\'' + @django_database["password"] + '\'' %>,
     'HOST': '<%= @django_database["host"] %>',
     'PORT': '<%= @django_database["port"] %>',
 }
