@@ -20,8 +20,7 @@ DATABASE_PORT = DATABASES['default']['PORT']
 <% end %>
 
 <% if @django_gunicorn && @django_gunicorn["enabled"] %>
-if 'gunicorn' not in INSTALLED_APPS:
-    INSTALLED_APPS += ('gunicorn',)
+LOCAL_APPS = ('gunicorn', )
 <% end %>
 <% if @django_celery && @django_celery["enabled"] && @django_celery["config_file"] %>
 # Override any celery settings
